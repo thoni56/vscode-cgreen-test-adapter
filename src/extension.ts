@@ -28,7 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     async function discoverAllTests() {
 		// Have to discover at least one test for the test view to show up
-        const testItem = controller.createTestItem("testId", "testName");
+        const testItem = controller.createTestItem("testId", "Dummy Test to make test view show up");
 		controller.items.add(testItem);
     }
 
@@ -38,6 +38,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
     function gatherTestItems(collection: vscode.TestItemCollection) {
         const items: vscode.TestItem[] = [];
+
+		
         collection.forEach(item => items.push(item));
         return items;
     }
