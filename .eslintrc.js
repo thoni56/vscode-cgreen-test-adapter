@@ -10,6 +10,11 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 	],
+	"env": {
+		"node": true,
+		"es6": true
+    },
+	"ignorePatterns": ["out/"],
 	rules: {
 		'semi': [2, "always"],
 		'@typescript-eslint/no-unused-vars': 0,

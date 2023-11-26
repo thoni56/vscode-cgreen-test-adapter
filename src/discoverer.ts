@@ -1,4 +1,9 @@
-export function discoverSoFiles(workspacePath: string): string[] {
-    // Implementation goes here
-    return []; // Return an array of file paths
+import * as vscode from 'vscode';
+
+export async function discoverCgreenFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<string[]> {
+    return getAllSOFilesInWorkspace();
 }
+function getAllSOFilesInWorkspace(): string[] | PromiseLike<string[]> {
+    return [];
+}
+
