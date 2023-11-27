@@ -4,5 +4,6 @@ module.exports = {
     testMatch: [
       "**/unittests/**/*.(test|spec).ts"
     ],
+    roots: ["."]
   };
   

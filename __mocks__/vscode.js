@@ -1,19 +1,15 @@
 // __mocks__/vscode.js
-
 const vscode = {
-    Uri: {
-      parse: jest.fn(),
-      file: jest.fn((path) => ({
-        scheme: 'file',
-        path,
-        toString: () => `file://${path}`
-      })),
-      // ... other Uri methods and properties ...
-    },
     workspace: {
-      // Mock specific workspace properties and methods you use
+      findFiles: jest.fn(),
+      // Other workspace methods...
     },
-    // ... other parts of the vscode API you use ...
+    Uri: {
+      file: jest.fn((path) => ({ scheme: 'file', path, toString: () => path })),
+      // Other Uri methods...
+    },
+    RelativePattern: jest.fn(),
+    // Other vscode APIs...
   };
   
   module.exports = vscode;
