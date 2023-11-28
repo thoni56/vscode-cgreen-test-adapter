@@ -3,7 +3,6 @@ module.exports = {
     testEnvironment: 'node',
     testMatch: [
       "**/unittests/**/*.(test|spec).ts"
-    ],
-    roots: ["."]
+    ]
   };
   

@@ -22,15 +22,18 @@ describe('Discoverer Module', () => {
     (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([]);
     expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
   });
-  it('should discover no files in a workspace without any .so files', async () => {
+  it('should discover no files in a workspace no .so files', async () => {
     (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([vscode.Uri.file("a.exe")]);
     expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
   });
   it('should discover a single .so file in a simple workspace', async () => {
+    (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([vscode.Uri.file("a.exe"), vscode.Uri.file("a.so")]);
     // Action: Run the discoverer on the mock workspace
     const discoveredFiles = await discoverCgreenFiles(mockedWorkspaceFolder);
 
-    // Assertion: Expect discoveredFiles to contain the .so file
-    expect(discoveredFiles).toContain("");
+    // Assertion: Expect discoveredFiles to contain the single .so file
+    expect(discoveredFiles).toHaveLength(1);
+    expect(discoveredFiles[0].path).toBe("a.so");
   });
 });
+

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { discoverCgreenFiles } from './discoverer';
 
 export async function activate(context: vscode.ExtensionContext) {
     const controller = vscode.tests.createTestController('cgreenController', 'Cgreen Tests');
@@ -27,9 +28,21 @@ export async function activate(context: vscode.ExtensionContext) {
     }
 
     async function discoverAllTests() {
-		// Have to discover at least one test for the test view to show up
-        const testItem = controller.createTestItem("testId", "Dummy Test to make test view show up");
-		controller.items.add(testItem);
+		// Have to discover at least one test for the test view to show up...
+        const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null;
+
+        if (workspaceFolder) {
+            const discoveredFiles : vscode.Uri[] = await discoverCgreenFiles(workspaceFolder);
+            for (const file of discoveredFiles) {
+                const testItem = controller.createTestItem(file.path, "Test...");
+                controller.items.add(testItem);
+            }
+        } else {
+            // Handle the case where there is no open workspace folder
+            vscode.window.showInformationMessage('No workspace folder is open.');
+        }
+
+
     }
 
     async function resolveTestItem(item: vscode.TestItem) {

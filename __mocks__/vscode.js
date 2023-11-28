@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // __mocks__/vscode.js
 const vscode = {
     workspace: {
