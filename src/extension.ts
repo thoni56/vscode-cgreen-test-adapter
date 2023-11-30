@@ -34,7 +34,7 @@ export async function activate(context: vscode.ExtensionContext) {
         if (workspaceFolder) {
             const discoveredFiles : vscode.Uri[] = await discoverCgreenFiles(workspaceFolder);
             for (const file of discoveredFiles) {
-                const testItem = controller.createTestItem(file.path, "Test...");
+                const testItem = controller.createTestItem(file.path, file.path);
                 controller.items.add(testItem);
             }
         } else {
