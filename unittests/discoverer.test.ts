@@ -34,7 +34,6 @@ describe('Discoverer Module', () => {
     expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
   });
 
-
   it('should discover a single .so file in a simple workspace', async () => {
     (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([vscode.Uri.file("a.exe"), vscode.Uri.file("a.so")]);
     // Action: Run the discoverer on the mock workspace
@@ -50,10 +49,13 @@ describe('Discoverer Module', () => {
     (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([vscode.Uri.file("a.so")]);
   
     // Mock exec to simulate cgreen-runner not finding tests
-    jest.spyOn(child_process, 'exec').mockImplementation((_command, _options, callback: (error: child_process.ExecException | null, stdout: string, stderr: string) => void): child_process.ChildProcess => {
+    jest.spyOn(child_process, 'exec').mockImplementation((_command: any, _options: any, 
+                                                          callback: ((error: any,
+                                                                      stdout: string | Buffer,
+                                                                      stderr: string | Buffer) => void) | undefined) => {
       // Simulate output indicating no tests are found
-      callback?('No tests found', '');
-      return new child_process.ChildProcess();
+      callback!(null, 'No tests found', '');
+      return {} as child_process.ChildProcess;
     });
   
     const discoveredFiles = await discoverCgreenFiles(mockedWorkspaceFolder);
