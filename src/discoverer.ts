@@ -25,12 +25,12 @@ async function getAllSOFilesInWorkspace(workspaceFolder: vscode.WorkspaceFolder)
 
 function isCgreenTestFile(filePath: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      child_process.exec(`/usr/bin/cgreen-runner ${filePath}`, null, (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(!stdout.includes("No tests found"));
-      });
+        child_process.exec(`/usr/bin/cgreen-runner ${filePath}`, null, (error, stdout, stderr) => {
+                if (error) {
+                    resolve(false);
+                } else {
+                    resolve(!stdout.includes("No tests found"));
+                }
+            });
     });
-  }
+}
