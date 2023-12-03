@@ -36,7 +36,8 @@ describe("Discoverer Module", () => {
         (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([]);
         expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
     });
-    it("should discover no files in a workspace no .so files", async () => {
+
+    it("should discover no files in a workspace with no .so files", async () => {
         (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([
             vscode.Uri.file("a.exe"),
         ]);
@@ -73,6 +74,5 @@ describe("Discoverer Module", () => {
 
         // Assertions
         expect(discoveredFiles).toHaveLength(0);
-    });
-    
+    });    
 });

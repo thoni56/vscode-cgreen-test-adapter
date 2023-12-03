@@ -11,8 +11,14 @@ async function getAllSOFilesInWorkspace(workspaceFolder: vscode.WorkspaceFolder)
     const uris = await vscode.workspace.findFiles(pattern);
     const so_files = uris.filter(uri => uri.path.endsWith(".so"));
 
-    // Now try them as Cgreen files
-    const cgreen_files = await so_files.filter(uri => isCgreenTestFile(uri.path));
+    // First, map each URI to a promise returned by isCgreenTestFile
+    const cgreen_files_promises = so_files.map(uri => isCgreenTestFile(uri.path));
+
+    // Use Promise.all to wait for all promises to resolve
+    const cgreen_files_results = await Promise.all(cgreen_files_promises);
+
+    // Filter the original URIs based on the results
+    const cgreen_files = so_files.filter((_uri, index) => cgreen_files_results[index]);
 
     return cgreen_files;
 }
