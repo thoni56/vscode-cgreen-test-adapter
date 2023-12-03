@@ -42,7 +42,6 @@ export async function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage('No workspace folder is open.');
         }
 
-
     }
 
     async function resolveTestItem(item: vscode.TestItem) {
@@ -51,7 +50,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
     function gatherTestItems(collection: vscode.TestItemCollection) {
         const items: vscode.TestItem[] = [];
-
 		
         collection.forEach(item => items.push(item));
         return items;
