@@ -1,21 +1,25 @@
-// There is a "manual mock" in the directory `__mocks__`, `vscode.js`, which is a Jest special
-// feature. That mock is required to override Jests attempt to load a real `vscode` module
-// otherwise. An option would have been to have mock factories in each test file but that would
-// have polluted the code with a lot of unimportant boiler plate code.
-jest.mock("vscode");
-
-// We can still control the mocked `vscode` using for example
-//     - mockImplementation()
-//     - mockResolvedValue()
-
+import * as sinon from 'sinon';
 
 import { discoverCgreenFiles } from "../src/discoverer";
 
-// Imports of things that will be mocked need to be done in exactly the same way as in the Unit Under Test
 import * as vscode from "vscode";
-
 import * as child_process from "child_process";
-jest.mock("child_process");
+
+let findFilesStub: sinon.SinonStub;
+let execStub: sinon.SinonStub;
+
+beforeEach(() => {
+  // Create a Sinon stub for the findFiles method
+  findFilesStub = sinon.stub(vscode.workspace, 'findFiles');
+  execStub = sinon.stub(child_process, 'exec');
+});
+
+afterEach(() => {
+  // Restore the original methods
+  findFilesStub.restore();
+  execStub.restore();
+});
+
 
 const mockedWorkspaceFolder: vscode.WorkspaceFolder = {
     uri: {
@@ -27,46 +31,24 @@ const mockedWorkspaceFolder: vscode.WorkspaceFolder = {
     index: 0,
 };
 
-afterEach(() => {
-    jest.resetAllMocks();
-});
 
 describe("Discoverer Module", () => {
     it("should discover no files in a workspace without files", async () => {
-        (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([]);
+        findFilesStub.resolves([]);
         expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
     });
 
     it("should discover no files in a workspace with no .so files", async () => {
-        (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([
-            vscode.Uri.file("a.exe"),
-        ]);
+        findFilesStub.resolves([vscode.Uri.file("a.exe")]);
         expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
     });
 
     it("should not discover any .so file as a Cgreen test file if it has no tests", async () => {
         // Mock findFiles to return .so files
-        (vscode.workspace.findFiles as jest.Mock).mockResolvedValue([
-            vscode.Uri.file("a.so"),
-        ]);
+        findFilesStub.resolves([vscode.Uri.file("a.so")]);
 
         // Mock exec to simulate cgreen-runner not finding tests
-        jest.spyOn(child_process, "exec").mockImplementationOnce(
-            (
-                _command: any,
-                _options: any,
-                callback: ((
-                          error: any,
-                          stdout: string | Buffer,
-                          stderr: string | Buffer
-                      ) => void)
-                    | undefined
-            ) => {
-                // Simulate output indicating no tests are found
-                callback!(null, "No tests found in ...", "");
-                return {} as child_process.ChildProcess;
-            }
-        );
+        execStub.yields(null, "No tests found");
 
         const discoveredFiles = await discoverCgreenFiles(
             mockedWorkspaceFolder
