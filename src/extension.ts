@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { discoverCgreenFiles } from './discoverer';
+import { discoverCgreenTestFiles } from './discoverer';
 
 export async function activate(context: vscode.ExtensionContext) {
     const controller = vscode.tests.createTestController('cgreenController', 'Cgreen Tests');
@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null;
 
         if (workspaceFolder) {
-            const discoveredFiles : vscode.Uri[] = await discoverCgreenFiles(workspaceFolder);
+            const discoveredFiles : vscode.Uri[] = await discoverCgreenTestFiles(workspaceFolder);
             for (const file of discoveredFiles) {
                 const testItem = controller.createTestItem(file.path, file.path);
                 controller.items.add(testItem);

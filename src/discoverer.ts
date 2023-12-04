@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as child_process from "child_process";
 
-export async function discoverCgreenFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
+export async function discoverCgreenTestFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
     return getAllCgreenTestFilesInWorkspace(workspaceFolder);
 }
 

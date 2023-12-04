@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 
-import { discoverCgreenFiles } from "../src/discoverer";
+import { discoverCgreenTestFiles } from "../src/discoverer";
 
 import * as vscode from "vscode";
 import * as child_process from "child_process";
@@ -35,12 +35,12 @@ const mockedWorkspaceFolder: vscode.WorkspaceFolder = {
 describe("Discoverer Module", () => {
     it("should discover no files in a workspace without files", async () => {
         findFilesStub.resolves([]);
-        expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
+        expect(await discoverCgreenTestFiles(mockedWorkspaceFolder)).toEqual([]);
     });
 
     it("should discover no files in a workspace with no .so files", async () => {
         findFilesStub.resolves([vscode.Uri.file("non-cgreen.exe")]);
-        expect(await discoverCgreenFiles(mockedWorkspaceFolder)).toEqual([]);
+        expect(await discoverCgreenTestFiles(mockedWorkspaceFolder)).toEqual([]);
     });
 
     it("should not discover any .so file as a Cgreen test file if it has no tests", async () => {
@@ -50,7 +50,7 @@ describe("Discoverer Module", () => {
         // Mock exec to simulate cgreen-runner not finding tests
         execStub.yields(null, "No tests found");
 
-        const discoveredFiles = await discoverCgreenFiles(
+        const discoveredFiles = await discoverCgreenTestFiles(
             mockedWorkspaceFolder
         );
 
@@ -74,7 +74,7 @@ describe("Discoverer Module", () => {
         // Mock findFiles to return .so files
         findFilesStub.resolves([vscode.Uri.file("non_cgreen_file.so"), vscode.Uri.file("cgreen_tests.so")]);
 
-        const discoveredFiles = await discoverCgreenFiles(
+        const discoveredFiles = await discoverCgreenTestFiles(
             mockedWorkspaceFolder
         );
 
