@@ -2,9 +2,10 @@ import * as vscode from 'vscode';
 import * as child_process from "child_process";
 
 export async function discoverCgreenFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
-    return getAllSOFilesInWorkspace(workspaceFolder);
+    return getAllCgreenTestFilesInWorkspace(workspaceFolder);
 }
-async function getAllSOFilesInWorkspace(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
+
+async function getAllCgreenTestFilesInWorkspace(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
     const pattern = new vscode.RelativePattern(workspaceFolder, '**/*');
 
     // Use findFiles with the pattern to get all files
