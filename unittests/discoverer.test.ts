@@ -67,7 +67,7 @@ describe("Discoverer Module", () => {
             if (command.includes('non_cgreen_file.so')) {
               callback(null, 'No tests found', '');
             } else if (command.includes('cgreen_tests.so')) {
-              callback(null, 'Running "options_tests" (38 tests)...\n  "Options": 94 passes, 2 skipped in 20ms.\nCompleted "options_tests": 94 passes, 2 skipped in 20ms.', ''); 
+              callback(null, 'Running "cgreen_tests" (38 tests)...\n  "Options": 94 passes, 2 skipped in 20ms.\nCompleted "cgreen_tests": 94 passes, 2 skipped in 20ms.', ''); 
             }
         });
         

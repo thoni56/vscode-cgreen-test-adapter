@@ -25,7 +25,8 @@ async function getAllSOFilesInWorkspace(workspaceFolder: vscode.WorkspaceFolder)
 
 function isCgreenTestFile(filePath: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        child_process.exec(`/usr/bin/cgreen-runner ${filePath}`, null, (error, stdout, stderr) => {
+        // TODO Allow configuration of XML type (-x or -X)
+        child_process.exec(`/usr/bin/cgreen-runner -X TESTPROVIDER ${filePath}`, null, (error, stdout, stderr) => {
                 if (error) {
                     resolve(false);
                 } else {
