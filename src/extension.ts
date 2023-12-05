@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { discoverCgreenTestFiles } from './discoverer';
+import { discoverCgreenTestFiles } from './testFileDiscoverer';
 
 export async function activate(context: vscode.ExtensionContext) {
     const controller = vscode.tests.createTestController('cgreenController', 'Cgreen Tests');

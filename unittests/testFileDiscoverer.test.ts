@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 
-import { discoverCgreenTestFiles } from "../src/discoverer";
+import { discoverCgreenTestFiles } from "../src/testFileDiscoverer";
 
 import * as vscode from "vscode";
 import * as runner from '../src/runner';
@@ -32,7 +32,7 @@ const mockedWorkspaceFolder: vscode.WorkspaceFolder = {
 };
 
 
-describe("Discoverer Module", () => {
+describe("Test File Discoverer Module", () => {
     it("should discover no files in a workspace without files", async () => {
         findFilesStub.resolves([]);
         expect(await discoverCgreenTestFiles(mockedWorkspaceFolder)).toEqual([]);
