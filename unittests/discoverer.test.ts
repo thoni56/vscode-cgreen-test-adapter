@@ -3,7 +3,6 @@ import * as sinon from 'sinon';
 import { discoverCgreenTestFiles } from "../src/discoverer";
 
 import * as vscode from "vscode";
-import * as child_process from "child_process";
 import * as runner from '../src/runner';
 
 let findFilesStub: sinon.SinonStub;
