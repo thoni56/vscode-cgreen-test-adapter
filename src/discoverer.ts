@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as child_process from "child_process";
+import { isCgreenTestFile } from './runner';
 
 export async function discoverCgreenTestFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
     return getAllCgreenTestFilesInWorkspace(workspaceFolder);
@@ -22,21 +22,4 @@ async function getAllCgreenTestFilesInWorkspace(workspaceFolder: vscode.Workspac
     const cgreen_files = so_files.filter((_uri, index) => cgreen_files_results[index]);
 
     return cgreen_files;
-}
-
-function isCgreenTestFile(filePath: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-        // TODO Allow configuration of XML type (-x or -X)
-        child_process.exec(`/usr/bin/cgreen-runner -X TESTPROVIDER ${filePath}`, null, outputIndicatesCgreenTestFile(resolve));
-    });
-
-    function outputIndicatesCgreenTestFile(resolve: (value: boolean | PromiseLike<boolean>) => void): ((error: child_process.ExecException | null, stdout: string | Buffer, stderr: string | Buffer) => void) | undefined {
-        return (error, stdout, stderr) => {
-            if (error) {
-                resolve(false);
-            } else {
-                resolve(!stdout.includes("No tests found"));
-            }
-        };
-    }
 }

@@ -4,20 +4,21 @@ import { discoverCgreenTestFiles } from "../src/discoverer";
 
 import * as vscode from "vscode";
 import * as child_process from "child_process";
+import * as runner from '../src/runner';
 
 let findFilesStub: sinon.SinonStub;
-let execStub: sinon.SinonStub;
+let isCgreenTestFileStub: sinon.SinonStub;
 
 beforeEach(() => {
   // Create a Sinon stub for the findFiles method
   findFilesStub = sinon.stub(vscode.workspace, 'findFiles');
-  execStub = sinon.stub(child_process, 'exec');
+  isCgreenTestFileStub = sinon.stub(runner, 'isCgreenTestFile');
 });
 
 afterEach(() => {
   // Restore the original methods
   findFilesStub.restore();
-  execStub.restore();
+  isCgreenTestFileStub.restore();
 });
 
 
@@ -47,8 +48,8 @@ describe("Discoverer Module", () => {
         // Mock findFiles to return .so files
         findFilesStub.resolves([vscode.Uri.file("non_cgreen_file.so")]);
 
-        // Mock exec to simulate cgreen-runner not finding tests
-        execStub.yields(null, "No tests found");
+        // Mock isCgreenTestFile() to simulate cgreen-runner not thinking it is a test file
+        isCgreenTestFileStub.resolves(false);
 
         const discoveredFiles = await discoverCgreenTestFiles(
             mockedWorkspaceFolder
@@ -59,20 +60,11 @@ describe("Discoverer Module", () => {
     });
     
     it("should discover one .so file as a Cgreen test file if it has tests", async () => {
-        execStub.callsFake((command: string, ...args: any[]) => {
-            // Exec is overloaded so we can't use a single signature,
-            // collect all variants and pull out the callback...
-            const callback = args.find(arg => typeof arg === 'function'); 
-
-            if (command.includes('non_cgreen_file.so')) {
-              callback(null, 'No tests found', '');
-            } else if (command.includes('cgreen_tests.so')) {
-              callback(null, 'Running "cgreen_tests" (38 tests)...\n  "Options": 94 passes, 2 skipped in 20ms.\nCompleted "cgreen_tests": 94 passes, 2 skipped in 20ms.', ''); 
-            }
-        });
-        
         // Mock findFiles to return .so files
-        findFilesStub.resolves([vscode.Uri.file("non_cgreen_file.so"), vscode.Uri.file("cgreen_tests.so")]);
+        findFilesStub.resolves([vscode.Uri.file("non_cgreen_file.so"), vscode.Uri.file("cgreen_file.so")]);
+        
+        isCgreenTestFileStub.withArgs("non_cgreen_file.so").resolves(false);
+        isCgreenTestFileStub.withArgs("cgreen_file.so").resolves(true);
 
         const discoveredFiles = await discoverCgreenTestFiles(
             mockedWorkspaceFolder
@@ -80,6 +72,6 @@ describe("Discoverer Module", () => {
 
         // Assertions
         expect(discoveredFiles).toHaveLength(1);
-        expect(discoveredFiles[0].path).toEqual("cgreen_tests.so");
-    });  
+        expect(discoveredFiles[0].path).toEqual("cgreen_file.so");
+    });
 });
