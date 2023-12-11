@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
-import { createExtendedTestItem } from "./extendedTestItem";
+import { createTestItem } from "./testItem";
 
-export function testItemsFromResultsFile(resultsFile: vscode.Uri) {
-    return createExtendedTestItem("id", "label", resultsFile, "custom");
+export function testItemsFromResultsFile(resultsFile: vscode.Uri) : vscode.TestItem {
+    // Create a tree of ExtendedTestItems representing all results in the file
+    const top = createTestItem("id", "label", resultsFile);
+    top.children.add(createTestItem("id2", "label2", resultsFile));
+    return top;
 }

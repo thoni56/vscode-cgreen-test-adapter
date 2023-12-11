@@ -1,9 +1,12 @@
 import * as vscode from 'vscode';
-import { discoverAllTestResults } from './resultsDiscoverer';
+import { discoverAllTestItems as discoverAllTestItems } from './resultsDiscoverer';
+import { setController } from './testItem';
 
 
 export async function activate(context: vscode.ExtensionContext) {
     const controller = vscode.tests.createTestController('cgreenController', 'Cgreen Tests');
+    setController(controller);
+    
     context.subscriptions.push(controller);
 
     controller.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true);
@@ -18,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     async function runHandler(request: vscode.TestRunRequest, cancellation: vscode.CancellationToken) {
         const run = controller.createTestRun(request);
-        for (const test of request.include ?? gatherTestItems(controller.items)) {
+        for (const test of (request.include ?? gatherTestItems(controller.items))) {
             if (cancellation.isCancellationRequested) {
                 run.skipped(test);
                 continue;
@@ -29,13 +32,12 @@ export async function activate(context: vscode.ExtensionContext) {
     }
 
     async function resolveTestItem(item: vscode.TestItem) {
-        // Logic to resolve a single test item
-        // Don't know how to do that...
+        // Resolve means to complete the information in the TestItem in case it was incomplete
     }
 
     function gatherTestItems(collection: vscode.TestItemCollection) {
         const items: vscode.TestItem[] = [];
-		
+  
         collection.forEach(item => items.push(item));
         return items;
     }
@@ -44,9 +46,10 @@ export async function activate(context: vscode.ExtensionContext) {
 async function discoverAllTests(controller : vscode.TestController) {
     const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null;
     if (workspaceFolder) {
-        discoverAllTestResults(workspaceFolder, controller);
+        const discoveredTestItems = await discoverAllTestItems(workspaceFolder);
+        discoveredTestItems.forEach(testItem => {controller.items.add(testItem);});
     } else {
-        // Handle the case where there is no open workspace folder
+        // No open workspace folder
         vscode.window.showInformationMessage('No workspace folder is open.');
     }
 }

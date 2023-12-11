@@ -4,5 +4,5 @@ import * as vscode from 'vscode';
 
 export function discoverAllResultsFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
     // Placeholder function - actual implementation not required for the mock
-    throw new Error("Not yet implemented");
+    return Promise.resolve([vscode.Uri.file("sample/X-options_tests.xml")]);
 }

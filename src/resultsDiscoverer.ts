@@ -1,12 +1,11 @@
 import * as vscode from "vscode";
 import { discoverAllResultsFiles } from "./resultsFileDiscoverer";
 import { testItemsFromResultsFile } from "./resultsFileConverter";
-import { ExtendedTestItem } from "./extendedTestItem";
 
 
-export async function discoverAllTestResults(workspaceFolder: vscode.WorkspaceFolder, controller : vscode.TestController): Promise<ExtendedTestItem[]>  {
+export async function discoverAllTestItems(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.TestItem[]> {
     const resultsFiles = await discoverAllResultsFiles(workspaceFolder);
-    const extendedTestItems = resultsFiles.map((f) => { return testItemsFromResultsFile(f); });
-    return extendedTestItems;
+    const testItems = resultsFiles.map((f) => { return testItemsFromResultsFile(f); });
+    return testItems;
 }
 

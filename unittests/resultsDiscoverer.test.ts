@@ -6,7 +6,7 @@ import * as resultsFileDiscoverer from '../src/resultsFileDiscoverer';
 import * as resultsFileConverter from '../src/resultsFileConverter';
 
 // Unit under test
-import { discoverAllTestResults } from '../src/resultsDiscoverer';
+import { discoverAllTestItems } from '../src/resultsDiscoverer';
 
 let discoverAllResultsFilesStub = sinon.stub();
 let testItemFromResultsFileStub = sinon.stub();
@@ -36,14 +36,14 @@ const mockedTestController = {} as vscode.TestController;
 describe("resultsDiscoverer", () => {
     it("should find no TestItems if there are no result files", async () => {
         discoverAllResultsFilesStub.resolves([]);
-        expect(await discoverAllTestResults(mockedWorkspaceFolder, mockedTestController)).toEqual([]);
+        expect(await discoverAllTestItems(mockedWorkspaceFolder)).toEqual([]);
     });
     it("should return one (suite) TestItem if there is one file with only a suite", async () => {
         discoverAllResultsFilesStub.resolves([vscode.Uri.file("a/results/file.xml")]);
-        testItemFromResultsFileStub.returns({ testItem: {}, additionalInfo: { uri: vscode.Uri.file("a/results/file.xml"), name: "options_tests" } });
-        const discoveredResults = await discoverAllTestResults(mockedWorkspaceFolder, mockedTestController);
+        testItemFromResultsFileStub.returns({ id: "1", uri: vscode.Uri.file("a/results/file.xml"), label: "options_tests" } as vscode.TestItem);
+        const discoveredResults = await discoverAllTestItems(mockedWorkspaceFolder);
         expect(discoveredResults.length).toEqual(1);
-        expect(discoveredResults[0].additionalInfo.uri.path).toEqual("a/results/file.xml");
-        expect(discoveredResults[0].additionalInfo.name).toEqual("options_tests");
+        expect(discoveredResults[0].uri!.path).toEqual("a/results/file.xml");
+        expect(discoveredResults[0].label).toEqual("options_tests");
     });
 });
