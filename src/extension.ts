@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { discoverCgreenTestFiles } from './testFileDiscoverer';
+import { discoverAllTestResults } from './resultsDiscoverer';
+
 
 export async function activate(context: vscode.ExtensionContext) {
     const controller = vscode.tests.createTestController('cgreenController', 'Cgreen Tests');
@@ -9,7 +10,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     controller.resolveHandler = async item => {
         if (!item) {
-            await discoverAllTests();
+            await discoverAllTests(controller);
             return;
         }
         await resolveTestItem(item);
@@ -27,25 +28,9 @@ export async function activate(context: vscode.ExtensionContext) {
         run.end();
     }
 
-    async function discoverAllTests() {
-		// Have to discover at least one test for the test view to show up...
-        const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null;
-
-        if (workspaceFolder) {
-            const discoveredFiles : vscode.Uri[] = await discoverCgreenTestFiles(workspaceFolder);
-            for (const file of discoveredFiles) {
-                const testItem = controller.createTestItem(file.path, file.path);
-                controller.items.add(testItem);
-            }
-        } else {
-            // Handle the case where there is no open workspace folder
-            vscode.window.showInformationMessage('No workspace folder is open.');
-        }
-
-    }
-
     async function resolveTestItem(item: vscode.TestItem) {
         // Logic to resolve a single test item
+        // Don't know how to do that...
     }
 
     function gatherTestItems(collection: vscode.TestItemCollection) {
@@ -53,5 +38,15 @@ export async function activate(context: vscode.ExtensionContext) {
 		
         collection.forEach(item => items.push(item));
         return items;
+    }
+}
+
+async function discoverAllTests(controller : vscode.TestController) {
+    const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null;
+    if (workspaceFolder) {
+        discoverAllTestResults(workspaceFolder, controller);
+    } else {
+        // Handle the case where there is no open workspace folder
+        vscode.window.showInformationMessage('No workspace folder is open.');
     }
 }
