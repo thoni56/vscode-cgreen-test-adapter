@@ -1,8 +1,33 @@
-// resultsFileDiscoverer.ts
+import * as vscode from "vscode";
 
-import * as vscode from 'vscode';
+export async function discoverAllResultsFiles(
+    workspaceFolder: vscode.WorkspaceFolder
+): Promise<vscode.Uri[]> {
+    return getAllResultsFilesInWorkspace(workspaceFolder);
+}
 
-export function discoverAllResultsFiles(workspaceFolder: vscode.WorkspaceFolder): Promise<vscode.Uri[]> {
-    // Placeholder function - actual implementation not required for the mock
-    return Promise.resolve([vscode.Uri.file("sample/X-options_tests.xml")]);
+async function getAllResultsFilesInWorkspace(
+    workspaceFolder: vscode.WorkspaceFolder
+): Promise<vscode.Uri[]> {
+    const pattern = new vscode.RelativePattern(workspaceFolder, "**/*");
+
+    // Use findFiles with the pattern to get all files
+    const uris = await vscode.workspace.findFiles(pattern);
+    const xmlFiles = uris.filter((uri) => uri.path.endsWith(".xml"));
+
+    // First, map each URI to a promise returned by isResultsFile()
+    const resultsFilesPromises = xmlFiles.map((uri) => isResultsFile(uri.path));
+
+    // Use Promise.all to wait for all promises to resolve
+    const resultsFileUris = await Promise.all(resultsFilesPromises);
+
+    // Filter the original URIs based on the results
+    const resultsFiles = xmlFiles.filter((_uri, index) => resultsFileUris[index]);
+
+    return resultsFiles;
+}
+
+function isResultsFile(path: string) {
+    // TODO Should investigate if the file is actually a results file, probably by looking for "<TestSuite ..." as the top node
+    return true;
 }

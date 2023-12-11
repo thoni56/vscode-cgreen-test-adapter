@@ -6,7 +6,7 @@ import * as resultsFileDiscoverer from '../src/resultsFileDiscoverer';
 import * as resultsFileConverter from '../src/resultsFileConverter';
 
 // Unit under test
-import { discoverAllTestItems } from '../src/resultsDiscoverer';
+import { discoverAllTestItems } from '../src/testItemDiscoverer';
 
 let discoverAllResultsFilesStub = sinon.stub();
 let testItemFromResultsFileStub = sinon.stub();

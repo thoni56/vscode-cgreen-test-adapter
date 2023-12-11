@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { discoverAllTestItems as discoverAllTestItems } from './resultsDiscoverer';
+import { discoverAllTestItems as discoverAllTestItems } from './testItemDiscoverer';
 import { setController } from './testItem';
 
 
