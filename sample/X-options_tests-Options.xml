@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="options_tests-Options" failures="0" errors="0" skipped="2" time="0.02400">
+  <testcase name="can_allocate_a_string" classname="options_tests/Options" time="0.00300"/>
+  <testcase name="can_deep_copy_options_with_one_string_option" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_deep_copy_options_with_one_stringlist_option_with_one_string" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_deep_copy_options_with_one_stringlist_option_with_two_strings" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_deep_copy_options_with_two_string_options" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_deep_copy_options_with_two_stringlist_option_with_two_strings" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_expand_special_variable_file" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_find_config_file_in_current_directory_if_exists" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_find_standard_options_file_from_sourcefile_path" classname="options_tests/Options" time="0.00100">
+    <skipped/>
+  </testcase>
+  <testcase name="can_get_java_class_and_source_paths" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_get_options_file_from_filename_using_searchStandardOptionsFileAndSectionForFile" classname="options_tests/Options" time="0.00100">
+    <skipped/>
+  </testcase>
+  <testcase name="can_parse_about_command_line_option" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_parse_double_dash_version_command_line_option" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_parse_version_command_line_option" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_parse_xrefrc_option_with_equals" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_parse_xrefrc_option_with_filename_separate" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_readOptionsFromFileIntoArgs" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_read_a_normal_option_string_delimited_by_a_space" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_read_backquoted_option_string" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_read_double_quoted_option_string" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_read_square_bracketed_option_strings" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_return_standard_options_filename_and_section_as_for_ffmpeg" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_see_if_a_project_doesnt_cover_file" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_see_if_a_project_in_a_configuration_file_with_a_single_project_on_first_line_covers_file" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="can_see_if_a_project_in_a_configuration_file_with_a_single_project_preceeded_by_whitespace_covers_file" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="can_see_if_a_project_in_a_configuration_file_with_other_project_before_covers_file" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="collects_option_field_that_allocate_a_string_in_options_space" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="collects_option_field_that_allocate_a_string_list_in_options_space" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="collects_variable_as_allocating_two_strings_in_options_space" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="should_error_when_environment_storage_is_exhausted" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="should_get_back_stored_option_variable_value" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="will_find_config_file_in_parent_directory" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="will_not_expand_special_file_variable_when_no_value" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="will_not_find_config_file_in_empty_current_directory_with_no_parents" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="will_return_eof_when_end_of_file_and_nothing_read" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="will_return_false_if_package_structure_does_not_exist" classname="options_tests/Options" time="0.00100"/>
+  <testcase name="will_return_true_if_package_structure_exists" classname="options_tests/Options" time="0.00000"/>
+  <testcase name="will_return_true_if_package_structure_exists_in_search_path" classname="options_tests/Options" time="0.00100"/>
+</testsuite>
