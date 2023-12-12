@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 
 
 export function parseXmlFile(uri: vscode.Uri): any {
-    const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+    const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "" });
     const xmlSource = readFileSync(uri.path);
     const xml = parser.parse(xmlSource);
 
