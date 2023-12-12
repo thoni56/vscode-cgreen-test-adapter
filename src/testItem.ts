@@ -11,7 +11,7 @@ const extendedTestItemInfoMap = new Map<vscode.TestItem, ExtendedTestItemInfo>()
 
 // The controller to be used to create the TestItems
 let testController!: vscode.TestController;
-export function setController(controller: vscode.TestController) {
+export function setControllerForTestItems(controller: vscode.TestController) {
     testController = controller;
 }
 

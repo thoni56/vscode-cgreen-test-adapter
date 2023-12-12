@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import { discoverAllTestItems as discoverAllTestItems } from './testItemDiscoverer';
-import { setController } from './testItem';
+import { setControllerForTestItems } from './testItem';
 
 
 export async function activate(context: vscode.ExtensionContext) {
     const controller = vscode.tests.createTestController('cgreenController', 'Cgreen Tests');
-    setController(controller);
+    setControllerForTestItems(controller);
     
     context.subscriptions.push(controller);
 
@@ -47,7 +47,9 @@ async function discoverAllTests(controller : vscode.TestController) {
     const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0] : null;
     if (workspaceFolder) {
         const discoveredTestItems = await discoverAllTestItems(workspaceFolder);
-        discoveredTestItems.forEach(testItem => {controller.items.add(testItem);});
+        const workspaceTestItem = controller.createTestItem(workspaceFolder.uri.path, workspaceFolder.name);
+        controller.items.add(workspaceTestItem);
+        discoveredTestItems.forEach(testItem => {workspaceTestItem.children.add(testItem);});
     } else {
         // No open workspace folder
         vscode.window.showInformationMessage('No workspace folder is open.');
