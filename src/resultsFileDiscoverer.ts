@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { isResultsFile } from "./xmlParser";
 
 export async function discoverAllResultsFiles(
     workspaceFolder: vscode.WorkspaceFolder
@@ -27,7 +28,4 @@ async function getAllResultsFilesInWorkspace(
     return resultsFiles;
 }
 
-function isResultsFile(path: string) {
-    // TODO Should investigate if the file is actually a results file, probably by looking for "<TestSuite ..." as the top node
-    return true;
-}
+
